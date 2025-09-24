@@ -43,6 +43,7 @@ export class CardsController {
     return this.cardsService.update(id, dto);
   }
 
+  // TODO: Polish this part
   @Post(':id/profile-pic')
   @UseInterceptors(
     FileInterceptor('file', {
@@ -73,8 +74,7 @@ export class CardsController {
 
   @Delete(':id/profile-pic')
   async deleteProfilePic(@Param('id') id: string) {
-    // delete the profile pic from the uploads folder
-    // remove it from the card entry in the database
+    return this.cardsService.removeProfilePic(id);
   }
 
   @Delete(':id')

@@ -8,6 +8,8 @@ import { Repository } from 'typeorm';
 import { Card } from './entities/card.entity';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
+import { join } from 'path';
+import { unlink } from 'fs/promises';
 
 @Injectable()
 export class CardsService {
@@ -26,7 +28,7 @@ export class CardsService {
   }
 
   async findAll(): Promise<Card[]> {
-    return this.cardsRepo.find({});
+    return this.cardsRepo.find();
   }
 
   async findOne(slug: string): Promise<Card> {
@@ -51,9 +53,27 @@ export class CardsService {
     }
   }
 
+  async removeProfilePic(id: string): Promise<void> {
+    const card = await this.cardsRepo.findOneBy({ id });
+    if (!card) throw new NotFoundException(`Card not found: ${id}`);
+    const { profilePicUrl } = card;
+    if (!profilePicUrl) return;
+
+    const relativePath = profilePicUrl.replace(/^\/+/, '');
+    const filePath = join(process.cwd(), relativePath);
+
+    try {
+      await unlink(filePath);
+    } catch (err) {
+      console.warn('Could not delete file:', err.message);
+    }
+
+    card.profilePicUrl = undefined;
+    await this.cardsRepo.save(card);
+  }
+
   async remove(id: string): Promise<void> {
-    // TODO
-    // Also delete the profile pic if used
+    await this.removeProfilePic(id);
     await this.cardsRepo.delete(id);
   }
 }

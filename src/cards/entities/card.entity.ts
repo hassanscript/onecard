@@ -21,5 +21,5 @@ export class Card {
   email: string;
 
   @Column({ nullable: true })
-  profilePicUrl: string;
+  profilePicUrl?: string;
 }
