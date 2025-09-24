@@ -15,7 +15,7 @@ export class RenderService {
   }
 
   async renderCard(slug: string): Promise<string> {
-    const card = await this.cardsService.findOne(slug);
+    const card = await this.cardsService.findOne(slug, true);
     const template = await this.templateService.get();
 
     if (!card) throw new NotFoundException(`Card not found: ${slug}`);

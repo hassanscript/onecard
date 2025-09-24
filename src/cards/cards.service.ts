@@ -31,19 +31,18 @@ export class CardsService {
     return this.cardsRepo.find();
   }
 
-  async findOne(slug: string): Promise<Card> {
+  async findOne(id: string, bySlug?: boolean): Promise<Card> {
     const card = await this.cardsRepo.findOne({
-      where: { slug },
+      where: { [bySlug ? 'slug' : 'id']: id },
     });
-    if (!card) throw new NotFoundException(`Card not found: ${slug}`);
+    if (!card) throw new NotFoundException(`Card not found: ${id}`);
     return card;
   }
 
   async update(id: string, dto: UpdateCardDto): Promise<Card> {
     try {
       await this.cardsRepo.update(id, dto);
-      const card = await this.cardsRepo.findOne({ where: { id } });
-      if (!card) throw new NotFoundException('Card not found');
+      const card = await this.findOne(id);
       return card;
     } catch (err) {
       if (err.code === 'ER_DUP_ENTRY') {
@@ -54,8 +53,8 @@ export class CardsService {
   }
 
   async removeProfilePic(id: string): Promise<void> {
-    const card = await this.cardsRepo.findOneBy({ id });
-    if (!card) throw new NotFoundException(`Card not found: ${id}`);
+    const card = await this.findOne(id);
+
     const { profilePicUrl } = card;
     if (!profilePicUrl) return;
 
@@ -65,9 +64,11 @@ export class CardsService {
     try {
       await unlink(filePath);
     } catch (err) {
+      // TODO: do something about this
       console.warn('Could not delete file:', err.message);
     }
 
+    // this is not setting the profile pic url to undefined/null
     card.profilePicUrl = undefined;
     await this.cardsRepo.save(card);
   }

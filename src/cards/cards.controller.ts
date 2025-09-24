@@ -33,9 +33,9 @@ export class CardsController {
     return this.cardsService.findAll();
   }
 
-  @Get(':slug')
-  findOne(@Param('slug') slug: string) {
-    return this.cardsService.findOne(slug);
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.cardsService.findOne(id);
   }
 
   @Put(':id')
@@ -43,19 +43,18 @@ export class CardsController {
     return this.cardsService.update(id, dto);
   }
 
-  // TODO: Polish this part
   @Post(':id/profile-pic')
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
         destination: './uploads/profile-pics',
-        filename: (req, file, callback) => {
+        filename: (_req, file, callback) => {
           const uniqueSuffix =
             Date.now() + '-' + Math.round(Math.random() * 1e9);
           callback(null, uniqueSuffix + extname(file.originalname));
         },
       }),
-      fileFilter: (req, file, callback) => {
+      fileFilter: (_req, file, callback) => {
         if (!file.mimetype.match(/\/(jpg|jpeg|png)$/)) {
           return callback(new Error('Only image files are allowed!'), false);
         }
