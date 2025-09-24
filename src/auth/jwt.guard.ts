@@ -12,14 +12,13 @@ export class JwtAuthGuard implements CanActivate {
 
     const [type, token] = authHeader.split(' ');
     if (type !== 'Bearer' || !token) return false;
-
     try {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: process.env.JWT_SECRET,
       });
       req.user = payload;
       return true;
-    } catch {
+    } catch (err) {
       return false;
     }
   }

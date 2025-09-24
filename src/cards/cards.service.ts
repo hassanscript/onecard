@@ -21,7 +21,6 @@ export class CardsService {
   async findOne(slug: string): Promise<Card> {
     const card = await this.cardsRepo.findOne({
       where: { slug },
-      relations: ['template'],
     });
     if (!card) throw new NotFoundException(`Card not found: ${slug}`);
     return card;

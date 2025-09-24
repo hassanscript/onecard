@@ -1,11 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
-import { Template } from '../../templates/entities/template.entity';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity('cards')
 export class Card {
@@ -32,8 +25,4 @@ export class Card {
 
   @Column({ type: 'json', nullable: true })
   customFields: Record<string, any>;
-
-  @ManyToOne(() => Template, { nullable: true })
-  @JoinColumn({ name: 'template_id' })
-  template?: Template;
 }

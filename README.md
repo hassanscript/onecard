@@ -6,10 +6,10 @@ _A self-hosted digital business card generator and micro-site manager._
 
 OneCard is a lightweight self-hosted tool that lets companies create and manage employee business cards as **HTML micro-sites**.
 
-- Admin can log in, create cards for employees, and assign templates.
+- Admin can log in, create cards for employees.
 - Each card has its own **unique URL** (e.g. `/cards/jane-doe`).
-- Templates are fully customizable using **Liquid-style placeholders** and **CSS**.
-- Real-time preview: edit templates and see results instantly.
+- Template is fully customizable using **Liquid-style placeholders** and **CSS**.
+- Real-time preview: edit template and see results instantly.
 - Supports profile pictures, standard fields (name, title, phone, email), and **custom fields**.
 
 👉 Ideal for small teams or companies who want control over their brand identity without depending on third-party SaaS.
