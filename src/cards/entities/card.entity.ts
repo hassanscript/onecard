@@ -22,7 +22,4 @@ export class Card {
 
   @Column({ nullable: true })
   profilePicUrl: string;
-
-  @Column({ type: 'json', nullable: true })
-  customFields: Record<string, any>;
 }

@@ -22,7 +22,6 @@ export class RenderService {
 
     const context = {
       ...card,
-      custom_fields: card.customFields || {},
     };
 
     const renderedHtml = await this.engine.parseAndRender(template, context);

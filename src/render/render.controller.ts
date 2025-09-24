@@ -1,4 +1,3 @@
-// src/render/render.controller.ts
 import { Controller, Get, Param, Res } from '@nestjs/common';
 import { RenderService } from './render.service';
 import { Response } from 'express';
